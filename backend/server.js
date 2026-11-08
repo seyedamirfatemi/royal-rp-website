@@ -173,10 +173,24 @@ app.use('/api', api);
    STATIC FRONT-END (optional)
    =============================================================== */
 if (config.server.serveStatic) {
+  /* Caching depends on whether a file's name changes when its content
+     does. The build gives the code chunks a content hash, so those can
+     be cached forever. The two entry points cannot: royal.min.css and
+     app.js keep the same name across deploys, so a long max-age pins
+     every visitor to the version they first loaded - a CSS fix would
+     not reach anyone for a week. They revalidate instead, which costs
+     one conditional request and answers 304 when nothing changed. */
+  const IMMUTABLE = /chunk-[A-Za-z0-9_-]+\.(js|css)$/;
+  const REVALIDATE = /(royal\.min\.css|app\.js|\.json)$/;
+
   const staticOpts = {
-    maxAge: config.isProd ? '7d' : 0,
+    maxAge: config.isProd ? '1d' : 0,
     setHeaders(res, filePath) {
-      if (/\.html$/.test(filePath)) res.setHeader('Cache-Control', 'no-cache');
+      if (/\.html$/.test(filePath) || REVALIDATE.test(filePath)) {
+        res.setHeader('Cache-Control', 'no-cache');
+      } else if (IMMUTABLE.test(filePath)) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      }
     }
   };
   for (const dir of ['css', 'js', 'assets', 'locales', 'pages']) {
