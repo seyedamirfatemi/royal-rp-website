@@ -202,7 +202,15 @@ export function validate(schema, source = 'body') {
         field: i.path.join('.') || source,
         message: i.message
       }));
-      return next(new HttpError(400, details[0]?.message || 'Invalid input', 'validation_failed', details));
+      /* Name the field in the message. The UI shows the message alone,
+         and zod's wording for a missing value is "Invalid input:
+         expected string, received undefined" - true, but useless
+         without knowing which input it means. */
+      const first = details[0];
+      const message = first
+        ? (first.field && first.field !== source ? `${first.field}: ${first.message}` : first.message)
+        : 'Invalid input';
+      return next(new HttpError(400, message, 'validation_failed', details));
     }
     if (source === 'query') {
       // Express 5 exposes req.query as a getter; assign onto it instead.
