@@ -292,6 +292,13 @@ export async function status() {
     gametype: dynamic?.gametype || null,
     mapname: dynamic?.mapname || null,
     framework: await detectFramework(),
+
+    /* `connected` above only means FXServer's own HTTP answered. The
+       bridge resource is what actually delivers purchases, and it can
+       be stopped while the server runs, so report it separately
+       instead of letting a true `connected` imply it. */
+    bridge: bridge ? 'ok' : 'unreachable',
+
     resourceCount: Array.isArray(info?.resources) ? info.resources.length : (bridge?.resourceCount ?? 0),
     tickMs: bridge?.tickMs ?? null,
     cpuPercent: bridge?.cpuPercent ?? null,

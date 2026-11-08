@@ -18,7 +18,8 @@
     "db:reset": "node backend/database/init.js --force && node backend/database/seed.js",
     "domain": "node tools/set-domain.js",
     "reset": "node tools/reset-for-launch.js",
-    "bridge:sync": "node tools/sync-bridge-token.js"
+    "bridge:sync": "node tools/sync-bridge-token.js",
+    "bridge:check": "node tools/check-bridge.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
