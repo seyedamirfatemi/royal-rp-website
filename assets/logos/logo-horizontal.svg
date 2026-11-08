@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 130" width="520" height="130" >
+
+  <defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%"   stop-color="#9c7c1b"/>
+    <stop offset="35%"  stop-color="#d4af37"/>
+    <stop offset="50%"  stop-color="#fff3c4"/>
+    <stop offset="65%"  stop-color="#ffd700"/>
+    <stop offset="100%" stop-color="#9c7c1b"/>
+  </linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff"/><stop offset="60%" stop-color="#d9d9dd"/><stop offset="100%" stop-color="#9b9ba1"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(66 66)">
+    <circle r="56" fill="#0a0a0a" stroke="url(#g)" stroke-width="3"/>
+    <circle r="47" fill="none" stroke="url(#g)" stroke-width="1" opacity=".55"/>
+    <g transform="translate(0 -16) scale(.62)">
+      <path d="M-34 18 L-28 -14 L-14 0 L0 -22 L14 0 L28 -14 L34 18 Z" fill="url(#g)"/>
+      <rect x="-35" y="18" width="70" height="9" rx="2.5" fill="url(#g)"/>
+    </g>
+    <text y="30" text-anchor="middle" font-family="Georgia,serif" font-weight="bold" font-size="40" fill="url(#silver)">RR</text>
+  </g>
+  <text x="146" y="62" font-family="Georgia,serif" font-weight="bold" font-size="42" letter-spacing="7" fill="url(#silver)">ROYAL</text>
+  <text x="146" y="100" font-family="Georgia,serif" font-weight="bold" font-size="42" letter-spacing="7" fill="url(#g)">RP</text>
+  <path d="M146 76 H470" stroke="url(#g)" stroke-width="1" opacity=".45"/>
+</svg>

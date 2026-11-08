@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300" >
+
+  <defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%"   stop-color="#9c7c1b"/>
+    <stop offset="35%"  stop-color="#d4af37"/>
+    <stop offset="50%"  stop-color="#fff3c4"/>
+    <stop offset="65%"  stop-color="#ffd700"/>
+    <stop offset="100%" stop-color="#9c7c1b"/>
+  </linearGradient>
+    <radialGradient id="fl" cx=".5" cy=".5" r=".5"><stop offset="0%" stop-color="#000" stop-opacity=".7"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="600" height="300" fill="#0b0b0d"/>
+  <ellipse cx="300" cy="252" rx="210" ry="24" fill="url(#fl)"/>
+  <g stroke="#0a0a0a" stroke-width="2.5" fill="url(#g)">
+    <path d="M190 206 C196 168 230 150 268 156 L330 130 L392 148 C420 160 432 184 426 206 L396 206 C398 184 384 170 364 168 L300 182 L238 176 C216 178 208 190 210 206 Z"/>
+  </g>
+  <path d="M322 128 L368 112 L384 126 L336 142 Z" fill="#1a1a1a" stroke="#0a0a0a" stroke-width="2"/>
+  <path d="M244 160 L214 128 L232 122 L258 150 Z" fill="#1a1a1a"/>
+  <circle cx="196" cy="214" r="48" fill="none" stroke="#111" stroke-width="12"/>
+  <circle cx="196" cy="214" r="30" fill="none" stroke="#d4af37" stroke-width="3"/>
+  <circle cx="420" cy="214" r="48" fill="none" stroke="#111" stroke-width="12"/>
+  <circle cx="420" cy="214" r="30" fill="none" stroke="#d4af37" stroke-width="3"/>
+  <circle cx="196" cy="214" r="7" fill="#d4af37"/><circle cx="420" cy="214" r="7" fill="#d4af37"/>
+  <path d="M186 150 L160 142 L156 158 L182 166 Z" fill="#fff4c4"/>
+  <text x="300" y="288" text-anchor="middle" font-family="Georgia,serif" font-size="18" letter-spacing="6" fill="#d4af37" opacity=".8">MOTO</text>
+</svg>

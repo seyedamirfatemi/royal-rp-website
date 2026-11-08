@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 34" width="1200" height="34" >
+
+  <defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#9c7c1b"/>
+    <stop offset="35%" stop-color="#d4af37"/>
+    <stop offset="50%" stop-color="#fff3c4"/>
+    <stop offset="65%" stop-color="#ffd700"/>
+    <stop offset="100%" stop-color="#9c7c1b"/>
+  </linearGradient></defs>
+  <rect width="1200" height="34" fill="#0d0b06"/>
+  <g fill="url(#g)" opacity=".85">
+    <path d="M-20 34 L0 0 L14 0 L-6 34 Z"/><path d="M12 34 L32 0 L46 0 L26 34 Z"/><path d="M44 34 L64 0 L78 0 L58 34 Z"/><path d="M76 34 L96 0 L110 0 L90 34 Z"/><path d="M108 34 L128 0 L142 0 L122 34 Z"/><path d="M140 34 L160 0 L174 0 L154 34 Z"/><path d="M172 34 L192 0 L206 0 L186 34 Z"/><path d="M204 34 L224 0 L238 0 L218 34 Z"/><path d="M236 34 L256 0 L270 0 L250 34 Z"/><path d="M268 34 L288 0 L302 0 L282 34 Z"/><path d="M300 34 L320 0 L334 0 L314 34 Z"/><path d="M332 34 L352 0 L366 0 L346 34 Z"/><path d="M364 34 L384 0 L398 0 L378 34 Z"/><path d="M396 34 L416 0 L430 0 L410 34 Z"/><path d="M428 34 L448 0 L462 0 L442 34 Z"/><path d="M460 34 L480 0 L494 0 L474 34 Z"/><path d="M492 34 L512 0 L526 0 L506 34 Z"/><path d="M524 34 L544 0 L558 0 L538 34 Z"/><path d="M556 34 L576 0 L590 0 L570 34 Z"/><path d="M588 34 L608 0 L622 0 L602 34 Z"/><path d="M620 34 L640 0 L654 0 L634 34 Z"/><path d="M652 34 L672 0 L686 0 L666 34 Z"/><path d="M684 34 L704 0 L718 0 L698 34 Z"/><path d="M716 34 L736 0 L750 0 L730 34 Z"/><path d="M748 34 L768 0 L782 0 L762 34 Z"/><path d="M780 34 L800 0 L814 0 L794 34 Z"/><path d="M812 34 L832 0 L846 0 L826 34 Z"/><path d="M844 34 L864 0 L878 0 L858 34 Z"/><path d="M876 34 L896 0 L910 0 L890 34 Z"/><path d="M908 34 L928 0 L942 0 L922 34 Z"/><path d="M940 34 L960 0 L974 0 L954 34 Z"/><path d="M972 34 L992 0 L1006 0 L986 34 Z"/><path d="M1004 34 L1024 0 L1038 0 L1018 34 Z"/><path d="M1036 34 L1056 0 L1070 0 L1050 34 Z"/><path d="M1068 34 L1088 0 L1102 0 L1082 34 Z"/><path d="M1100 34 L1120 0 L1134 0 L1114 34 Z"/><path d="M1132 34 L1152 0 L1166 0 L1146 34 Z"/><path d="M1164 34 L1184 0 L1198 0 L1178 34 Z"/><path d="M1196 34 L1216 0 L1230 0 L1210 34 Z"/><path d="M1228 34 L1248 0 L1262 0 L1242 34 Z"/>
+  </g>
+  <rect y="0" width="1200" height="2" fill="#d4af37" opacity=".6"/>
+  <rect y="32" width="1200" height="2" fill="#d4af37" opacity=".6"/>
+</svg>

@@ -1,0 +1,1 @@
+import{A as a,e as n,g as f,i as t}from"./chunk-W2AEBEJL.js";function c(){let o=t("#nf-sub"),e=t("#nf-title");e&&(e.textContent=n("notfound.title","مسیر اشتباه")),o&&(o.textContent=n("notfound.sub","این صفحه وجود ندارد."));let i=t("#nf-path");i&&(i.textContent=location.pathname)}async function r(){c(),f(c),a()}var l={init:r};export{l as default,r as init};

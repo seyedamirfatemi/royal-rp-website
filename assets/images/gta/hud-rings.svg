@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 110" width="260" height="110" >
+
+  <defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#9c7c1b"/>
+    <stop offset="35%" stop-color="#d4af37"/>
+    <stop offset="50%" stop-color="#fff3c4"/>
+    <stop offset="65%" stop-color="#ffd700"/>
+    <stop offset="100%" stop-color="#9c7c1b"/>
+  </linearGradient></defs>
+  
+      <circle cx="48" cy="55" r="34" fill="none" stroke="#1c1c22" stroke-width="7"
+              stroke-dasharray="153.81237631975628 213.62830044410595" stroke-linecap="round" transform="rotate(129 48 55)"/>
+      <circle cx="48" cy="55" r="34" fill="none" stroke="#3ddc84" stroke-width="7"
+              stroke-dasharray="132.3 213.62830044410595" stroke-linecap="round" transform="rotate(129 48 55)"/>
+  
+      <circle cx="130" cy="55" r="34" fill="none" stroke="#1c1c22" stroke-width="7"
+              stroke-dasharray="153.81237631975628 213.62830044410595" stroke-linecap="round" transform="rotate(129 130 55)"/>
+      <circle cx="130" cy="55" r="34" fill="none" stroke="#8fb4ff" stroke-width="7"
+              stroke-dasharray="84.6 213.62830044410595" stroke-linecap="round" transform="rotate(129 130 55)"/>
+  
+      <circle cx="212" cy="55" r="34" fill="none" stroke="#1c1c22" stroke-width="7"
+              stroke-dasharray="153.81237631975628 213.62830044410595" stroke-linecap="round" transform="rotate(129 212 55)"/>
+      <circle cx="212" cy="55" r="34" fill="none" stroke="url(#g)" stroke-width="7"
+              stroke-dasharray="110.7 213.62830044410595" stroke-linecap="round" transform="rotate(129 212 55)"/>
+  <g fill="#9a9a9a" font-family="Tahoma,sans-serif" font-size="11" text-anchor="middle">
+    <text x="48" y="104">HP</text><text x="130" y="104">ARMOR</text><text x="212" y="104">CASH</text>
+  </g>
+</svg>

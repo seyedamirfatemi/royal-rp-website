@@ -1,0 +1,52 @@
+ROYAL RP - deploying this build
+================================================================
+
+This folder is the whole site. Upload it as-is.
+
+ 1. Install the runtime dependencies (production only):
+        npm ci --omit=dev
+
+ 2. Create the configuration from the template and fill it in:
+        cp backend/.env.example backend/.env
+
+    The values that must be set before anything works:
+        DB_DRIVER=mysql
+        DB_HOST / DB_PORT / DB_USER / DB_PASSWORD
+        DB_NAME=royalrp_web          (the website's own database)
+        GAME_DB_NAME=volta           (read-only, the game's database)
+        SESSION_SECRET=              (openssl rand -hex 32)
+        PUBLIC_URL=                  (how players reach the site)
+
+    For payments:
+        PAYMENT_PROVIDER=zarinpal
+        ZARINPAL_MERCHANT_ID=        (36 characters, from zarinpal.com)
+        ZARINPAL_SANDBOX=false       (true while testing)
+
+ 3. Create the website database and load the shop content:
+        node backend/database/init.js
+        node backend/database/seed.js
+
+ 4. Start it (use pm2 or a systemd unit so it restarts on boot):
+        node backend/server.js
+
+ 5. Open the site and register. THE FIRST ACCOUNT BECOMES OWNER.
+    There is no shipped password anywhere in this build.
+
+ 6. Set the public address when the domain is ready:
+        node tools/set-domain.js yourdomain.ir --dry-run   (preview)
+        node tools/set-domain.js yourdomain.ir             (apply)
+    Then restart. It rewrites PUBLIC_URL, CORS_ORIGINS, COOKIE_SECURE,
+    TRUST_PROXY, DISCORD_REDIRECT_URI and both payment return URLs in
+    backend/.env, plus site.url in js/config.js.
+
+Notes
+-----
+* The game database is only ever read, never written. The one exception
+  is the royal-web-bridge resource, which is a SEPARATE FiveM resource
+  and is not part of this folder. It belongs beside this one in the
+  server's resources directory, must be in server.cfg:
+      ensure royal-web-bridge
+  and the token in its config.lua must match FIVEM_BRIDGE_TOKEN in
+  backend/.env (tools/sync-bridge-token.js keeps the two in step).
+* backend/.env is NOT in this build. Secrets are never bundled.
+* To rebuild after changing the source: node tools/build.js

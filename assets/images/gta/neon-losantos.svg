@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 130" width="520" height="130" >
+
+  <defs>
+    <filter id="n"><feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="520" height="130" fill="none"/>
+  <g filter="url(#n)">
+    <text x="260" y="78" text-anchor="middle" font-family="Georgia,serif" font-size="52"
+          letter-spacing="6" fill="none" stroke="#ff4fa3" stroke-width="2.2">
+      LOS SANTOS
+      <animate attributeName="stroke-opacity"
+               values="1;1;.35;1;.6;1;1;1;.2;1" dur="3.4s" repeatCount="indefinite"/>
+    </text>
+  </g>
+  <g stroke="#ff4fa3" stroke-opacity=".45" stroke-width="1.5">
+    <path d="M24 100 H496"/>
+    <path d="M24 24 H496"/>
+  </g>
+</svg>

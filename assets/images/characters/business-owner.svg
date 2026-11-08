@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" width="400" height="480" >
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#171308"/><stop offset="100%" stop-color="#07070a"/>
+    </linearGradient>
+    <radialGradient id="rim" cx=".5" cy=".4" r=".6">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity=".30"/>
+      <stop offset="100%" stop-color="#ffd700" stop-opacity="0"/>
+    </radialGradient>
+    
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%"   stop-color="#9c7c1b"/>
+    <stop offset="35%"  stop-color="#d4af37"/>
+    <stop offset="50%"  stop-color="#fff3c4"/>
+    <stop offset="65%"  stop-color="#ffd700"/>
+    <stop offset="100%" stop-color="#9c7c1b"/>
+  </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#bg)"/>
+  <circle cx="200" cy="190" r="150" fill="url(#rim)"/>
+  <g stroke="#ffd700" stroke-opacity=".22" fill="none">
+    <circle cx="200" cy="200" r="118"/><circle cx="200" cy="200" r="150"/>
+  </g>
+
+  <!-- torso -->
+  <path d="M96 480 C96 390 136 342 200 342 C264 342 304 390 304 480 Z" fill="#141418"/>
+  <path d="M200 342 L178 392 L200 416 L222 392 Z" fill="#0d0d0d" opacity=".35"/>
+
+  <!-- neck + head -->
+  <rect x="178" y="296" width="44" height="60" rx="18" fill="#c8976a"/>
+  <ellipse cx="200" cy="236" rx="74" ry="84" fill="#c8976a"/>
+
+  <!-- hair -->
+  <path d="M126 232 C126 170 156 142 200 142 C244 142 274 170 274 232
+           C274 206 256 192 226 190 C206 188 176 196 160 212 C144 226 130 230 126 232 Z" fill="#241a12"/>
+
+  <!-- face -->
+  <g fill="#1a1413">
+    <ellipse cx="174" cy="232" rx="7" ry="9"/>
+    <ellipse cx="226" cy="232" rx="7" ry="9"/>
+  </g>
+  <g fill="#fff" opacity=".65">
+    <circle cx="176" cy="229" r="2.2"/><circle cx="228" cy="229" r="2.2"/>
+  </g>
+  <path d="M160 212 q14 -8 28 -2" stroke="#241a12" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M212 210 q14 -6 28 2" stroke="#241a12" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M196 248 q4 14 8 16" stroke="#9c6b48" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M182 282 q18 12 36 0" stroke="#8a4f45" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+  
+      <path d="M200 342 L166 368 L200 440 L234 368 Z" fill="#0b0b0b"/>
+      <path d="M200 350 L186 366 L200 400 L214 366 Z" fill="#d4af37"/>
+      <path d="M160 352 L200 342 L240 352 L228 372 L200 360 L172 372 Z" fill="#fff" opacity=".9"/>
+
+  <rect x="0" y="434" width="400" height="46" fill="#000" opacity=".55"/>
+  <text x="200" y="464" text-anchor="middle" font-family="Georgia,serif" font-size="18" letter-spacing="5" fill="url(#g)">BUSINESS</text>
+  
+</svg>

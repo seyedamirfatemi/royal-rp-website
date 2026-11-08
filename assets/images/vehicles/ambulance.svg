@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300" >
+
+  <defs>
+    <linearGradient id="bodyG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e9eef5"/>
+      <stop offset="55%" stop-color="#e9eef5"/>
+      <stop offset="100%" stop-color="#aab6c6"/>
+    </linearGradient>
+    <linearGradient id="glassG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9fc2e8" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#1b2430"/>
+    </linearGradient>
+    <radialGradient id="floor" cx=".5" cy=".5" r=".5">
+      <stop offset="0%" stop-color="#000" stop-opacity=".7"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="45%" stop-color="#fff" stop-opacity=".35"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="300" fill="#0b0b0d"/>
+  <ellipse cx="300" cy="248" rx="250" ry="30" fill="url(#floor)"/>
+
+  <!-- body -->
+  <path d="M60 206 C56 170 70 158 108 150
+           L168 122 C190 90 228 30 300 30
+           C372 30 410 90 432 122
+           L494 150 C530 158 546 172 542 206
+           C542 220 530 226 516 226 L84 226 C70 226 60 220 60 206 Z"
+        fill="url(#bodyG)" stroke="#0a0a0a" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- greenhouse -->
+  <path d="M190 118 C212 82 244 52 300 52
+           C356 52 388 82 410 118 Z"
+        fill="url(#glassG)" stroke="#0a0a0a" stroke-width="2"/>
+  <path d="M298 52 V118" stroke="#0a0a0a" stroke-width="2.5"/>
+
+  <!-- body shine -->
+  <path d="M78 192 C150 176 450 176 524 192 L524 200 C450 184 150 184 78 200 Z" fill="url(#shine)"/>
+
+  <!-- lights -->
+  <path d="M62 180 L104 176 L104 194 L62 196 Z" fill="#fff4c4" opacity=".95"/>
+  <path d="M538 180 L496 176 L496 194 L538 196 Z" fill="#ff5a4a" opacity=".9"/>
+
+  <!-- side skirt + vents -->
+  <rect x="96" y="214" width="408" height="10" rx="4" fill="#0d0d0d" opacity=".85"/>
+  <g fill="#0d0d0d" opacity=".7">
+    <rect x="130" y="188" width="34" height="6" rx="3"/>
+    <rect x="436" y="188" width="34" height="6" rx="3"/>
+  </g>
+
+  
+      <rect x="254" y="40" width="92" height="14" rx="4" fill="#0b0b0b"/>
+      <rect x="258" y="43" width="40" height="8" rx="3" fill="#ff2b2b"/>
+      <rect x="302" y="43" width="40" height="8" rx="3" fill="#fff"/>
+      <g fill="#ff2b2b"><rect x="286" y="160" width="28" height="10" rx="2"/><rect x="295" y="151" width="10" height="28" rx="2"/></g>
+      <rect x="120" y="186" width="360" height="8" fill="#ff2b2b" opacity=".85"/>
+
+  <!-- wheels -->
+  <g>
+    <circle cx="160" cy="224" r="46" fill="#0b0b0b"/>
+    <circle cx="160" cy="224" r="27" fill="#1d1d1d" stroke="#d4af37" stroke-width="3"/>
+    <circle cx="160" cy="224" r="9" fill="#d4af37"/>
+    <path d="M160 224 L185.0 224.0" stroke="#d4af37" stroke-width="3" opacity=".75"/><path d="M160 224 L172.5 245.7" stroke="#d4af37" stroke-width="3" opacity=".75"/><path d="M160 224 L147.5 245.7" stroke="#d4af37" stroke-width="3" opacity=".75"/><path d="M160 224 L135.0 224.0" stroke="#d4af37" stroke-width="3" opacity=".75"/><path d="M160 224 L147.5 202.3" stroke="#d4af37" stroke-width="3" opacity=".75"/><path d="M160 224 L172.5 202.3" stroke="#d4af37" stroke-width="3" opacity=".75"/>
+    <circle cx="440" cy="224" r="46" fill="#0b0b0b"/>
+    <circle cx="440" cy="224" r="27" fill="#1d1d1d" stroke="#d4af37" stroke-width="3"/>
+    <circle cx="440" cy="224" r="9" fill="#d4af37"/>
+    <path d="M440 224 L465.0 224.0" stroke="#d4af37" stroke-width="3" opacity=".75"/><path d="M440 224 L452.5 245.7" stroke="#d4af37" stroke-width="3" opacity=".75"/><path d="M440 224 L427.5 245.7" stroke="#d4af37" stroke-width="3" opacity=".75"/><path d="M440 224 L415.0 224.0" stroke="#d4af37" stroke-width="3" opacity=".75"/><path d="M440 224 L427.5 202.3" stroke="#d4af37" stroke-width="3" opacity=".75"/><path d="M440 224 L452.5 202.3" stroke="#d4af37" stroke-width="3" opacity=".75"/>
+  </g>
+  <text x="300" y="282" text-anchor="middle" font-family="Georgia,serif" font-size="20" letter-spacing="6" fill="#d4af37" opacity=".8">EMS</text>
+  
+</svg>

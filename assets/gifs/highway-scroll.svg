@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" width="1200" height="120" >
+
+  <defs>
+    <linearGradient id="road" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#17171b"/><stop offset="100%" stop-color="#0a0a0c"/>
+    </linearGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#080808"/><stop offset="12%" stop-color="#080808" stop-opacity="0"/>
+      <stop offset="88%" stop-color="#080808" stop-opacity="0"/><stop offset="100%" stop-color="#080808"/>
+    </linearGradient>
+    
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#9c7c1b"/>
+    <stop offset="35%" stop-color="#d4af37"/>
+    <stop offset="50%" stop-color="#fff3c4"/>
+    <stop offset="65%" stop-color="#ffd700"/>
+    <stop offset="100%" stop-color="#9c7c1b"/>
+  </linearGradient>
+  </defs>
+  <rect width="1200" height="120" fill="url(#road)"/>
+
+  <!-- centre dashes, scrolling -->
+  <g fill="#ffd700" opacity=".85">
+    <g>
+      <rect x="0" y="56" width="62" height="7" rx="3.5"/><rect x="120" y="56" width="62" height="7" rx="3.5"/><rect x="240" y="56" width="62" height="7" rx="3.5"/><rect x="360" y="56" width="62" height="7" rx="3.5"/><rect x="480" y="56" width="62" height="7" rx="3.5"/><rect x="600" y="56" width="62" height="7" rx="3.5"/><rect x="720" y="56" width="62" height="7" rx="3.5"/><rect x="840" y="56" width="62" height="7" rx="3.5"/><rect x="960" y="56" width="62" height="7" rx="3.5"/><rect x="1080" y="56" width="62" height="7" rx="3.5"/><rect x="1200" y="56" width="62" height="7" rx="3.5"/><rect x="1320" y="56" width="62" height="7" rx="3.5"/><rect x="1440" y="56" width="62" height="7" rx="3.5"/><rect x="1560" y="56" width="62" height="7" rx="3.5"/><rect x="1680" y="56" width="62" height="7" rx="3.5"/><rect x="1800" y="56" width="62" height="7" rx="3.5"/><rect x="1920" y="56" width="62" height="7" rx="3.5"/><rect x="2040" y="56" width="62" height="7" rx="3.5"/><rect x="2160" y="56" width="62" height="7" rx="3.5"/><rect x="2280" y="56" width="62" height="7" rx="3.5"/>
+      <animateTransform attributeName="transform" type="translate" from="0 0" to="-120 0" dur="1.1s" repeatCount="indefinite"/>
+    </g>
+  </g>
+
+  <!-- kerb lines -->
+  <rect y="14" width="1200" height="2" fill="#d4af37" opacity=".3"/>
+  <rect y="104" width="1200" height="2" fill="#d4af37" opacity=".3"/>
+
+  <!-- passing headlight streaks -->
+  <g opacity=".5">
+    <rect x="-220" y="26" width="200" height="4" rx="2" fill="#fff6cf">
+      <animate attributeName="x" from="-220" to="1240" dur="2.3s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="-320" y="88" width="160" height="3" rx="1.5" fill="#ff8a6a">
+      <animate attributeName="x" from="1240" to="-320" dur="3.1s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  <rect width="1200" height="120" fill="url(#fade)"/>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" >
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#15120a"/><stop offset="55%" stop-color="#0b0b0d"/>
+      <stop offset="100%" stop-color="#070708"/>
+    </linearGradient>
+    <linearGradient id="t" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7a4a1d"/><stop offset="45%" stop-color="#c98b4b"/>
+      <stop offset="60%" stop-color="#fff5cf"/><stop offset="100%" stop-color="#7a4a1d"/>
+    </linearGradient>
+    <radialGradient id="gl" cx=".5" cy=".42" r=".55">
+      <stop offset="0%" stop-color="#c98b4b" stop-opacity=".35"/>
+      <stop offset="100%" stop-color="#c98b4b" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#c98b4b" flood-opacity=".45"/></filter>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect width="800" height="500" fill="url(#gl)"/>
+
+  <!-- lattice -->
+  <g stroke="#c98b4b" stroke-opacity=".10" stroke-width="1">
+    <path d="M-500 0 L0 500"/><path d="M-454 0 L46 500"/><path d="M-408 0 L92 500"/><path d="M-362 0 L138 500"/><path d="M-316 0 L184 500"/><path d="M-270 0 L230 500"/><path d="M-224 0 L276 500"/><path d="M-178 0 L322 500"/><path d="M-132 0 L368 500"/><path d="M-86 0 L414 500"/><path d="M-40 0 L460 500"/><path d="M6 0 L506 500"/><path d="M52 0 L552 500"/><path d="M98 0 L598 500"/><path d="M144 0 L644 500"/><path d="M190 0 L690 500"/><path d="M236 0 L736 500"/><path d="M282 0 L782 500"/><path d="M328 0 L828 500"/><path d="M374 0 L874 500"/><path d="M420 0 L920 500"/><path d="M466 0 L966 500"/><path d="M512 0 L1012 500"/><path d="M558 0 L1058 500"/><path d="M604 0 L1104 500"/><path d="M650 0 L1150 500"/><path d="M696 0 L1196 500"/><path d="M742 0 L1242 500"/><path d="M788 0 L1288 500"/><path d="M834 0 L1334 500"/><path d="M880 0 L1380 500"/><path d="M926 0 L1426 500"/><path d="M972 0 L1472 500"/><path d="M1018 0 L1518 500"/><path d="M1064 0 L1564 500"/><path d="M1110 0 L1610 500"/><path d="M1156 0 L1656 500"/><path d="M1202 0 L1702 500"/><path d="M1248 0 L1748 500"/><path d="M1294 0 L1794 500"/>
+  </g>
+
+  <!-- frame -->
+  <rect x="26" y="26" width="748" height="448" rx="12" fill="none" stroke="url(#t)" stroke-width="1.5" opacity=".75"/>
+  <g fill="url(#t)">
+    <rect x="22" y="22" width="9" height="9" transform="rotate(45 26.5 26.5)"/>
+    <rect x="769" y="22" width="9" height="9" transform="rotate(45 773.5 26.5)"/>
+    <rect x="22" y="469" width="9" height="9" transform="rotate(45 26.5 473.5)"/>
+    <rect x="769" y="469" width="9" height="9" transform="rotate(45 773.5 473.5)"/>
+  </g>
+
+  
+
+  <!-- icon -->
+  <g transform="translate(400 196)" filter="url(#sh)">
+    <g transform="translate(-60 -60) scale(5)" fill="none" stroke="url(#t)" stroke-width="1.6"
+       stroke-linecap="round" stroke-linejoin="round"><path d="M3 18 L5 6 L10 12 L12 4 L14 12 L19 6 L21 18 Z"/><path d="M3 18 H21"/></g>
+  </g>
+
+  <text x="400" y="368" text-anchor="middle" font-family="Georgia,serif" font-size="40"
+        font-weight="bold" letter-spacing="3" fill="url(#t)">VIP BRONZE</text>
+  <text x="400" y="404" text-anchor="middle" font-family="Georgia,serif" font-size="17"
+        letter-spacing="7" fill="#9a9a9a">ENTRY TIER</text>
+  <path d="M300 424 H500" stroke="url(#t)" stroke-width="1" opacity=".6"/>
+  <rect x="396" y="420" width="8" height="8" transform="rotate(45 400 424)" fill="url(#t)"/>
+</svg>
