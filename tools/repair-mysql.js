@@ -109,7 +109,14 @@ for (const t of TABLES) {
   }
 }
 
-await c.query('FLUSH PRIVILEGES');
+// FLUSH PRIVILEGES reads the very tables we are repairing, so it fails
+// too while any of them is still crashed. That is a symptom, not a new
+// problem, and it must not stop the report below from printing.
+try {
+  await c.query('FLUSH PRIVILEGES');
+} catch (e) {
+  if (!broken.length) throw e;   // unexpected if everything looked fine
+}
 await c.end();
 
 console.log('');
