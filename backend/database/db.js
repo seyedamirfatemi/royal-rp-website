@@ -48,7 +48,15 @@ export async function connect() {
     try {
       Database = (await import('better-sqlite3')).default;
     } catch {
-      throw new Error('better-sqlite3 is not installed. Run: npm install');
+      // better-sqlite3 is an optional dependency: it is the zero-config
+      // fallback for a local machine, and production runs on MySQL. On a
+      // host that skips optional dependencies it is simply absent, which
+      // means the driver was left at its default by mistake.
+      throw new Error(
+        'DB_DRIVER is "sqlite" but better-sqlite3 is not installed. ' +
+        'On a server set DB_DRIVER=mysql with DB_HOST / DB_USER / DB_PASSWORD / DB_NAME. ' +
+        'To use SQLite locally: npm i better-sqlite3'
+      );
     }
     fs.mkdirSync(path.dirname(config.db.sqliteFile), { recursive: true });
     sqlite = new Database(config.db.sqliteFile);

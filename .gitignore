@@ -1,0 +1,20 @@
+# Installed on the host by `npm install`, never committed.
+node_modules/
+
+# Secrets. The server's real values are set as environment variables
+# in the Runflare panel; .env.example is the template that is tracked.
+backend/.env
+.env
+
+# Local SQLite development database, if anyone ever uses that fallback.
+backend/database/*.sqlite
+backend/database/*.sqlite-shm
+backend/database/*.sqlite-wal
+
+# Operator uploads are runtime data, not source.
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+npm-debug.log*
+.DS_Store
+Thumbs.db
