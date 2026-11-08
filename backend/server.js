@@ -45,8 +45,27 @@ if (config.server.trustProxy) app.set('trust proxy', 1);
 
 /* ===============================================================
    SECURITY HEADERS
+   ---------------------------------------------------------------
+   Three of these headers only make sense on a secure origin, and one
+   of them breaks the site outright without TLS:
+
+   upgrade-insecure-requests tells the browser to fetch every
+   subresource over https. Behind TLS that is exactly right. On a
+   plain-http origin every stylesheet, script and image fails with
+   ERR_SSL_PROTOCOL_ERROR and the page renders as unstyled text.
+
+   So they are keyed on whether the site is actually served over
+   https, which PUBLIC_URL states, rather than on NODE_ENV. A
+   production server reached by IP before its certificate exists is
+   still production; it just is not secure yet.
    =============================================================== */
+const servesHttps = /^https:/i.test(config.server.publicUrl || '');
+
 app.use(helmet({
+  // Both are ignored by the browser on an insecure origin, and warn
+  // about it in the console. Nothing is lost by not sending them.
+  crossOriginOpenerPolicy: servesHttps,
+  originAgentCluster: servesHttps,
   contentSecurityPolicy: {
     useDefaults: true,
     directives: {
@@ -65,7 +84,7 @@ app.use(helmet({
       'form-action': ["'self'"],
       'base-uri': ["'self'"],
       'object-src': ["'none'"],
-      'upgrade-insecure-requests': config.isProd ? [] : null
+      'upgrade-insecure-requests': servesHttps ? [] : null
     }
   },
   crossOriginEmbedderPolicy: false,
