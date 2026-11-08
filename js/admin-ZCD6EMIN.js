@@ -348,7 +348,7 @@ import{a as Q,b as ze,c as Me,d as De,e as re,g as U}from"./chunk-HRWNYBPI.js";i
       </div>
     </div>`)}async function wt(){let[e,t,s]=await Promise.all([L(()=>b.get("/admin/charts/revenue",{days:30}),()=>({items:w.demoRevenueSeries(30)})),L(()=>b.get("/admin/charts/growth"),()=>({items:w.demoUserGrowth(12)})),L(()=>b.get("/admin/charts/categories"),()=>({items:w.demoCategorySplit()}))]),i=p("#chart-revenue");if(i){let f=e.data.items||e.data;U(i,()=>Q(i,f,{format:v=>S(v),label:"Revenue"}))}let d=p("#chart-growth");if(d){let f=t.data.items||t.data;U(d,()=>ze(d,f))}let l=p("#chart-donut");if(l){let f=s.data.items||s.data;if(f.length)U(l,()=>Me(l,f,{centerLabel:"مجموع",format:v=>S(v)})),De(p("#chart-donut-legend"),f,v=>S(v));else{l.innerHTML=`<p class="text-muted text-center" style="padding:2rem 0">${a(n("common.noResults","No sales yet"))}</p>`;let v=p("#chart-donut-legend");v&&(v.innerHTML="")}}let r=p("#chart-players");r&&(q()?U(r,()=>Q(r,w.demoPlayerCurve(24),{color:"#ffd700",label:"بازیکنان"})):o.status?.connected?U(r,()=>Q(r,w.demoPlayerCurve(24),{color:"#ffd700",label:"بازیکنان"})):r.innerHTML=`<div class="state" style="border:0;padding:2rem 1rem">
         <div class="state__icon">${m("server")}</div>
-        <p style="font-size:.86rem;margin:0">هنوز سابقه‌ای از بازیکنان ثبت نشده &mdash; برای ثبت، سرور FiveM را متصل کنید.</p>
+        <p style="font-size:.86rem;margin:0">هنوز سابقه‌ای از بازیکنان ثبت نشده &mdash; برای ثبت، سرور VMP را متصل کنید.</p>
       </div>`)}function dt(){let e=g.users,t=e.q.trim().toLowerCase(),s=o.users.filter(i=>!(e.role!=="all"&&i.role!==e.role||e.status!=="all"&&i.status!==e.status||t&&![i.username,i.displayName,i.email,String(i.id),i.discordId].join(" ").toLowerCase().includes(t)));return Ne(s,e.sort,e.dir)}function xt(){return C("users",n("admin.users","Users"),"",`
     <div class="card">
       <div class="tbl-toolbar">
@@ -424,7 +424,7 @@ import{a as Q,b as ze,c as Me,d as De,e as re,g as U}from"./chunk-HRWNYBPI.js";i
         <div class="char-stat"><div class="char-stat__label">${a(n("dash.lastSeen","Last seen"))}</div><div class="char-stat__value" style="font-size:.86rem">${a(Y(e.lastSeen))}</div></div>
       </div>
       <div class="mt-6">
-        <div class="label mb-4">شناسه FiveM</div>
+        <div class="label mb-4">شناسه VMP</div>
         <pre><code>${a(e.gameLicense)}</code></pre>
       </div>`,footer:`<button class="btn btn--dark" data-x>${a(n("common.close","Close"))}</button>`}).el.querySelector("[data-x]").addEventListener("click",function(){this.closest(".modal").querySelector(".modal__close").click()})}function St(e){let t=N({title:n("admin.setRole","تغییر نقش"),body:`
       <p class="mb-4">${a(e.displayName)}</p>
@@ -511,7 +511,7 @@ import{a as Q,b as ze,c as Me,d as De,e as re,g as U}from"./chunk-HRWNYBPI.js";i
           <button class="icon-btn icon-btn--danger" data-act="del" title="${a(n("common.delete","Delete"))}">${m("trash")}</button>
         </div>
       </td>
-    </tr>`).join("")||`<tr><td colspan="6" class="text-center text-muted" style="padding:2rem">${a(n("common.noResults","No results"))}</td></tr>`}var rt={manual:{label:"دستی (توسط تیم)",fields:[]},vip:{label:"اشتراک VIP",fields:[{k:"tier",l:"سطح",type:"select",opts:["bronze","silver","gold","platinum","queue"]},{k:"days",l:"مدت (روز)",type:"number",def:30},{k:"stipend",l:"حقوق ماهانه (دلار بازی)",type:"number",def:0}]},money:{label:"پول درون‌بازی",fields:[{k:"amount",l:"مبلغ (دلار بازی)",type:"number",def:5e5},{k:"account",l:"حساب",type:"select",opts:["bank","cash","black_money"]}]},coin:{label:"کوین سرور",fields:[{k:"amount",l:"تعداد کوین",type:"number",def:100}]},vehicle:{label:"خودرو",fields:[{k:"model",l:"نام مدل (spawn name)",type:"text",def:""},{k:"tuning",l:"تیونینگ",type:"select",opts:["none","full"]}]},item:{label:"آیتم اینونتوری",fields:[{k:"item",l:"نام آیتم",type:"gameitem",def:""},{k:"count",l:"تعداد",type:"number",def:1}]},slot:{label:"اسلات شخصیت",fields:[{k:"count",l:"تعداد اسلات",type:"number",def:1}]},role:{label:"نقش دیسکورد",fields:[{k:"role",l:"نام نقش",type:"text",def:"supporter"}]}};function tt(e,t={}){let s=rt[e];return!s||!s.fields.length?`<p class="text-muted" style="font-size:.82rem;margin:0">
+    </tr>`).join("")||`<tr><td colspan="6" class="text-center text-muted" style="padding:2rem">${a(n("common.noResults","No results"))}</td></tr>`}var rt={manual:{label:"دستی (توسط تیم)",fields:[]},vip:{label:"اشتراک VIP",fields:[{k:"tier",l:"سطح",type:"select",opts:["bronze","silver","gold","platinum","queue"]},{k:"days",l:"مدت (روز)",type:"number",def:30},{k:"stipend",l:"حقوق ماهانه (تومان بازی)",type:"number",def:0}]},money:{label:"پول درون‌بازی",fields:[{k:"amount",l:"مبلغ (تومان بازی)",type:"number",def:5e5},{k:"account",l:"حساب",type:"select",opts:["bank","cash","black_money"]}]},coin:{label:"کوین سرور",fields:[{k:"amount",l:"تعداد کوین",type:"number",def:100}]},vehicle:{label:"خودرو",fields:[{k:"model",l:"نام مدل (spawn name)",type:"text",def:""},{k:"tuning",l:"تیونینگ",type:"select",opts:["none","full"]}]},item:{label:"آیتم اینونتوری",fields:[{k:"item",l:"نام آیتم",type:"gameitem",def:""},{k:"count",l:"تعداد",type:"number",def:1}]},slot:{label:"اسلات شخصیت",fields:[{k:"count",l:"تعداد اسلات",type:"number",def:1}]},role:{label:"نقش دیسکورد",fields:[{k:"role",l:"نام نقش",type:"text",def:"supporter"}]}};function tt(e,t={}){let s=rt[e];return!s||!s.fields.length?`<p class="text-muted" style="font-size:.82rem;margin:0">
       این نوع تحویل نیاز به تنظیمات ندارد؛ پس از پرداخت، سفارش برای انجام دستی به تیم ارجاع می‌شود.
     </p>`:`<div class="form-grid">${s.fields.map(i=>{let d=t[i.k]??i.def??"";if(i.type==="select")return`<div class="field">
         <label for="dp-${i.k}">${a(i.l)}</label>
@@ -850,11 +850,11 @@ import{a as Q,b as ze,c as Me,d as De,e as re,g as U}from"./chunk-HRWNYBPI.js";i
           <div class="card__head"><h4>بخش اصلی صفحه نخست</h4></div>
           <div class="field">
             <label for="ct-title">عنوان اصلی</label>
-            <input class="input" id="ct-title" value="داستان شما آغاز می‌شود در لس سانتوس">
+            <input class="input" id="ct-title" value="داستان شما آغاز می‌شود در رویال آر‌پی">
           </div>
           <div class="field">
             <label for="ct-sub">زیرعنوان</label>
-            <textarea class="textarea" id="ct-sub" style="min-height:90px">یک شهر رول‌پلی پریمیوم روی FiveM با فریم‌ورک اختصاصی.</textarea>
+            <textarea class="textarea" id="ct-sub" style="min-height:90px">یک شهر رول‌پلی پریمیوم روی VMP با فریم‌ورک اختصاصی.</textarea>
           </div>
           <div class="field">
             <label>تصویر پس‌زمینه</label>
@@ -932,7 +932,7 @@ import{a as Q,b as ze,c as Me,d as De,e as re,g as U}from"./chunk-HRWNYBPI.js";i
             </span>
           </div>`).join("")}
       </div>
-    </div>`)}function Ut(){let e=o.status||{},t=p("#gauge-cpu");t&&re(t,e.cpuPercent??0,{label:n("status.cpu","CPU load")});let s=p("#gauge-mem");s&&re(s,e.memoryPercent??0,{label:n("status.memory","Memory")});let i=p("#gauge-slots");i&&re(i,Math.round((e.players||0)/(e.maxPlayers||1)*100),{label:n("status.players","ظرفیت اشغال‌شده")});let d=p("#chart-server-players");d&&U(d,()=>Q(d,w.demoPlayerCurve(24),{color:"#ffd700"}));let l=p("#admin-demo-server");l&&(l.innerHTML=de("demo.status","این اعداد شبیه‌سازی شده‌اند. برای داده زنده، بک‌اند را به سرور FiveM متصل کنید."))}function Ht(){return C("logs",n("admin.logs","Logs"),n("admin.readOnlyNote",""),`
+    </div>`)}function Ut(){let e=o.status||{},t=p("#gauge-cpu");t&&re(t,e.cpuPercent??0,{label:n("status.cpu","CPU load")});let s=p("#gauge-mem");s&&re(s,e.memoryPercent??0,{label:n("status.memory","Memory")});let i=p("#gauge-slots");i&&re(i,Math.round((e.players||0)/(e.maxPlayers||1)*100),{label:n("status.players","ظرفیت اشغال‌شده")});let d=p("#chart-server-players");d&&U(d,()=>Q(d,w.demoPlayerCurve(24),{color:"#ffd700"}));let l=p("#admin-demo-server");l&&(l.innerHTML=de("demo.status","این اعداد شبیه‌سازی شده‌اند. برای داده زنده، بک‌اند را به سرور VMP متصل کنید."))}function Ht(){return C("logs",n("admin.logs","Logs"),n("admin.readOnlyNote",""),`
     <div id="admin-demo-logs"></div>
 
     <div class="log-toolbar">
@@ -1012,7 +1012,7 @@ import{a as Q,b as ze,c as Me,d as De,e as re,g as U}from"./chunk-HRWNYBPI.js";i
         ${i("بک‌اند Node",y.api.base,{ok:e,detail:y.api.base},e?"":"با دستور npm run server اجرا کنید")}
         ${i("دیتابیس سایت","DB_HOST / DB_NAME در backend/.env",s("database"),"اگر تنظیم نشود، برای توسعه محلی روی SQLite کار می‌کند.")}
         ${i("دیتابیس بازی","GAME_DB_NAME در backend/.env",s("gameDb"),"فقط خوانده می‌شود؛ سایت هرگز روی دیتابیس بازی نمی‌نویسد.")}
-        ${i("سرور FiveM",y.server.ip,s("fivem"),"FIVEM_HOST و FIVEM_BRIDGE_TOKEN را تنظیم کنید و ریسورس royal-web-bridge را نصب کنید.")}
+        ${i("سرور VMP",y.server.ip,s("fivem"),"FIVEM_HOST و FIVEM_BRIDGE_TOKEN را تنظیم کنید و ریسورس royal-web-bridge را نصب کنید.")}
         ${i("ورود با دیسکورد","DISCORD_CLIENT_ID / DISCORD_CLIENT_SECRET",s("discord"),"برای ورود با دیسکورد و همگام‌سازی رول‌ها لازم است.")}
         ${i("بات دیسکورد","DISCORD_BOT_TOKEN",s("discordBot"),"برای اختصاص خودکار رول وی‌آی‌پی استفاده می‌شود.")}
         ${i("درگاه پرداخت","PAYMENT_PROVIDER در backend/.env",s("payments"),"تحویل محصول فقط پس از تأیید پرداخت توسط خودِ درگاه انجام می‌شود، نه با بازگشت مرورگر.")}

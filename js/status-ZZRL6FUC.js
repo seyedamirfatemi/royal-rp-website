@@ -1,5 +1,5 @@
 import{a as c,b as N}from"./chunk-FMVTN7RD.js";import"./chunk-TYJGKO4M.js";import"./chunk-OFD54N75.js";import{a as C,e as g,g as L}from"./chunk-HRWNYBPI.js";import"./chunk-GICZ4Y7Y.js";import{f as k,g as f,k as n}from"./chunk-J7TKWPPN.js";import"./chunk-MWRI3OKJ.js";import{b as m}from"./chunk-KIK4IJKS.js";import{b as u}from"./chunk-OCIUYIWP.js";import{A as _,L as P,a as r,e as t,g as x,i as d,l as s,p as v,r as l,v as w}from"./chunk-W2AEBEJL.js";var p=[],y=[];function h(e){let i=d("#status-root");if(!i||!e)return;i.innerHTML=`
-    ${k("demo.status","این اعداد شبیه‌سازی شده‌اند. برای داده زنده، بک‌اند را به سرور FiveM متصل کنید.")}
+    ${k("demo.status","این اعداد شبیه‌سازی شده‌اند. برای داده زنده، بک‌اند را به سرور VMP متصل کنید.")}
 
     <div class="card card--gold-edge mb-6">
       <div class="flex flex-between flex-wrap gap-5 items-center">
@@ -10,7 +10,7 @@ import{a as c,b as N}from"./chunk-FMVTN7RD.js";import"./chunk-TYJGKO4M.js";impor
               <span class="live-dot ${e.online?"":"live-dot--off"}"></span>
               ${s(e.demo?t("status.demo","داده نمایشی"):e.online?t("common.online","Online"):t("common.offline","Offline"))}
             </span>
-            <span class="text-muted" style="font-size:.86rem">${s(e.gametype||"رول‌پلی")} &middot; ${s(e.mapname||"Los Santos")} &middot; ${s(r.server.region)}</span>
+            <span class="text-muted" style="font-size:.86rem">${s(e.gametype||"رول‌پلی")} &middot; ${s(e.mapname||"Royal RP")} &middot; ${s(r.server.region)}</span>
           </div>
         </div>
         <div class="ip-box">

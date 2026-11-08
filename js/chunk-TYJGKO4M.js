@@ -78,7 +78,7 @@ import{a as b}from"./chunk-OFD54N75.js";import{a as u}from"./chunk-GICZ4Y7Y.js";
 
       <div>
         <h5 data-i18n="footer.connect">${a(e("footer.connect","Connect"))}</h5>
-        <p style="font-size:.875rem;margin-bottom:.75rem" data-i18n="footer.connectText">${a(e("footer.connectText","Jump straight into Los Santos."))}</p>
+        <p style="font-size:.875rem;margin-bottom:.75rem" data-i18n="footer.connectText">${a(e("footer.connectText","Jump straight into Royal RP."))}</p>
         <div class="ip-box" style="margin-bottom:.75rem">
           <code>${a(d.server.ip)}</code>
           <button class="btn btn--ghost btn--sm" data-copy="${a(d.server.ip)}"
