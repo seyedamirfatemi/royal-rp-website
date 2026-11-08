@@ -8,21 +8,15 @@
     "node": ">=18.17.0"
   },
   "scripts": {
-    "dev": "node tools/dev-server.js",
     "server": "node backend/server.js",
     "server:dev": "node --watch backend/server.js",
     "start": "npm run server",
-    "assets": "node tools/generate-assets.js && node tools/generate-gta-assets.js",
     "db:init": "node backend/database/init.js",
     "db:seed": "node backend/database/seed.js",
     "db:reset": "node backend/database/init.js --force && node backend/database/seed.js",
-    "build": "node tools/build.js",
     "domain": "node tools/set-domain.js",
     "reset": "node tools/reset-for-launch.js",
-    "postinstall": "node -e \"console.log('\\n  Royal RP ready.\\n  Front-end : npm run dev     -> http://localhost:5173\\n  Backend   : npm run server  -> http://localhost:4000\\n')\"",
-    "assets:gta": "node tools/generate-gta-assets.js",
-    "bridge:sync": "node tools/sync-bridge-token.js",
-    "import:server": "node tools/import-server-data.js"
+    "bridge:sync": "node tools/sync-bridge-token.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -50,8 +44,5 @@
     "server-website",
     "game-store"
   ],
-  "license": "UNLICENSED",
-  "devDependencies": {
-    "esbuild": "^0.28.2"
-  }
+  "license": "UNLICENSED"
 }
