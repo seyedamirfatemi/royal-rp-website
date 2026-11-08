@@ -9,6 +9,7 @@
   },
   "scripts": {
     "server": "node backend/server.js",
+    "setup": "node tools/setup-env.js",
     "server:dev": "node --watch backend/server.js",
     "start": "npm run server",
     "db:init": "node backend/database/init.js",
