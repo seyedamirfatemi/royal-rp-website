@@ -1,52 +1,152 @@
-ROYAL RP - deploying this build
+ROYAL RP - deploying the website on the VPS
 ================================================================
 
-This folder is the whole site. Upload it as-is.
+The site runs on the same machine as the FiveM server, in the server's
+resources folder, next to royal-web-bridge:
 
- 1. Install the runtime dependencies (production only):
-        npm ci --omit=dev
+    Hazard/resources/
+        Royalrp-site/        <- this folder
+        royal-web-bridge/    <- the FiveM resource
 
- 2. Create the configuration from the template and fill it in:
-        cp backend/.env.example backend/.env
+Why that matters: everything talks over loopback, so the only port the
+internet ever sees is the website's. MariaDB stays bound to localhost
+and the bridge keeps its loopback-only allow-list.
 
-    The values that must be set before anything works:
-        DB_DRIVER=mysql
-        DB_HOST / DB_PORT / DB_USER / DB_PASSWORD
-        DB_NAME=royalrp_web          (the website's own database)
-        GAME_DB_NAME=volta           (read-only, the game's database)
-        SESSION_SECRET=              (openssl rand -hex 32)
-        PUBLIC_URL=                  (how players reach the site)
+    FXServer  :30120  --- loopback --->  royal-web-bridge
+    MariaDB   :3306   --- loopback --->  volta        (read only)
+                                         royalrp_web  (the site)
+    website   :4000   <--- the only port players reach
 
-    For payments:
-        PAYMENT_PROVIDER=zarinpal
-        ZARINPAL_MERCHANT_ID=        (36 characters, from zarinpal.com)
-        ZARINPAL_SANDBOX=false       (true while testing)
 
- 3. Create the website database and load the shop content:
-        node backend/database/init.js
-        node backend/database/seed.js
+1. INSTALL NODE
+---------------
+Node 20 or newer, from nodejs.org. Check it:
 
- 4. Start it (use pm2 or a systemd unit so it restarts on boot):
-        node backend/server.js
+    node -v
 
- 5. Open the site and register. THE FIRST ACCOUNT BECOMES OWNER.
-    There is no shipped password anywhere in this build.
+2. DATABASES AND USERS
+----------------------
+MariaDB is already on the machine - it is what the game server uses.
+Open tools/create-db-users.sql, change the two passwords at the top,
+then run it once as root:
 
- 6. Set the public address when the domain is ready:
-        node tools/set-domain.js yourdomain.ir --dry-run   (preview)
-        node tools/set-domain.js yourdomain.ir             (apply)
-    Then restart. It rewrites PUBLIC_URL, CORS_ORIGINS, COOKIE_SECURE,
-    TRUST_PROXY, DISCORD_REDIRECT_URI and both payment return URLs in
-    backend/.env, plus site.url in js/config.js.
+    mysql -u root -p < tools/create-db-users.sql
 
-Notes
------
-* The game database is only ever read, never written. The one exception
-  is the royal-web-bridge resource, which is a SEPARATE FiveM resource
-  and is not part of this folder. It belongs beside this one in the
-  server's resources directory, must be in server.cfg:
-      ensure royal-web-bridge
-  and the token in its config.lua must match FIVEM_BRIDGE_TOKEN in
-  backend/.env (tools/sync-bridge-token.js keeps the two in step).
-* backend/.env is NOT in this build. Secrets are never bundled.
-* To rebuild after changing the source: node tools/build.js
+It creates the royalrp_web database and two least-privilege accounts:
+
+    royalrp_web   full rights on royalrp_web only
+    royalrp_read  SELECT on volta only
+
+The site never writes to the game database. Purchases are applied
+through royal-web-bridge, because VoltaBase holds an online player's
+money and inventory in memory and would overwrite a direct UPDATE on
+its next save. The read-only account matches what the code does.
+
+3. CONFIGURE
+------------
+    copy backend\.env.example backend\.env
+
+Then edit backend\.env and set:
+
+    SESSION_SECRET=      generate it, see below. Required: with
+                         NODE_ENV=production the server refuses to
+                         start without one, so that a restart cannot
+                         silently sign everybody out.
+    DB_PASSWORD=         the royalrp_web password from step 2
+    GAME_DB_PASSWORD=    the royalrp_read password from step 2
+    FIVEM_API_TOKEN=     must equal Config.Token in
+                         ../royal-web-bridge/config.lua
+                         `npm run bridge:sync` copies it across
+
+Generate the session secret:
+
+    node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+Everything else in the template is already set for this machine:
+PUBLIC_URL and FIVEM_PUBLIC_ADDRESS point at 5.57.34.36, the databases
+at 127.0.0.1, and the bridge at 127.0.0.1:30120.
+
+4. CREATE THE TABLES
+--------------------
+    npm ci --omit=dev
+    node backend/database/init.js
+    node backend/database/seed.js
+
+seed loads the catalogue, news and gallery. It creates NO accounts:
+there is no shipped password anywhere in this build.
+
+5. START IT
+-----------
+    start-website.bat
+
+To survive a reboot, run it as a service instead:
+
+    npm i -g pm2 pm2-windows-startup
+    pm2 start backend/server.js --name royal-site
+    pm2 save
+    pm2-startup install
+
+6. OPEN THE PORT
+----------------
+Allow TCP 4000 inbound in Windows Firewall. Do NOT open 3306 - the
+databases are only ever reached over loopback.
+
+7. THE BRIDGE
+-------------
+In server.cfg:
+
+    ensure royal-web-bridge
+
+Its config.lua keeps the default loopback-only allow-list, which is
+correct now that the site is on the same machine. Leave it that way.
+
+8. FIRST ACCOUNT
+----------------
+Open http://5.57.34.36:4000 and register. THE FIRST ACCOUNT BECOMES
+OWNER and can reach /pages/admin.html.
+
+Check the wiring first:
+
+    curl http://127.0.0.1:4000/api/health
+
+Expect ok:true for database, fivem and gameDb.
+
+
+WHEN THE DOMAIN ARRIVES
+=======================
+Point an A record at 5.57.34.36, then:
+
+    node tools/set-domain.js yourdomain.ir --dry-run
+    node tools/set-domain.js yourdomain.ir
+
+That rewrites PUBLIC_URL, CORS_ORIGINS, COOKIE_SECURE, TRUST_PROXY,
+DISCORD_REDIRECT_URI and both payment return URLs together. Changing
+only some of them breaks things quietly.
+
+It turns COOKIE_SECURE and TRUST_PROXY on, which assumes TLS in front.
+Put nginx or Caddy on 80/443, proxy to 127.0.0.1:4000, and pass
+X-Forwarded-Proto. Without that header a Secure cookie never arrives
+and nobody can sign in. Then close 4000 to the outside.
+
+WHEN THE PAYMENT GATEWAY ARRIVES
+================================
+In backend\.env:
+
+    PAYMENT_PROVIDER=zarinpal
+    ZARINPAL_MERCHANT_ID=<36 characters from zarinpal.com>
+    ZARINPAL_SANDBOX=false
+
+Never set PAYMENT_PROVIDER=mock on this machine. The mock gateway
+hands out purchases without taking payment; the server refuses to
+start with it under NODE_ENV=production.
+
+
+IF SOMETHING IS WRONG
+=====================
+The server prints a table of every integration at startup and refuses
+to run half-configured. /api/health reports the same thing as JSON.
+
+    database  ok:false   DB_USER / DB_PASSWORD / DB_NAME wrong, or
+                         step 4 was never run
+    gameDb    ok:false   GAME_DB_* wrong, or volta is not on this host
+    fivem     ok:false   FIVEM_HOST not set, or FXServer is not running
