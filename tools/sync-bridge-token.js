@@ -73,21 +73,39 @@ if (!config.fivem.gameDb.enabled) {
     fail(`Could not connect to the game database "${g.database}": ${err.message}`);
   }
 
-  await conn.query(`
-    CREATE TABLE IF NOT EXISTS royal_vip (
-      identifier  VARCHAR(60)  NOT NULL,
-      tier        VARCHAR(24)  NOT NULL,
-      expires_at  DATETIME     NULL,
-      granted_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (identifier),
-      KEY idx_royal_vip_expires (expires_at)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-  `);
+  /* The website's game-database account is deliberately read-only: the
+     site never writes to the game. So creating royal_vip here is a
+     best effort. When the account cannot create tables we only check
+     that the table is already there, which is what the root-run
+     tools/create-db-users.sql takes care of. */
+  let created = true;
+  try {
+    await conn.query(`
+      CREATE TABLE IF NOT EXISTS royal_vip (
+        identifier  VARCHAR(60)  NOT NULL,
+        tier        VARCHAR(24)  NOT NULL,
+        expires_at  DATETIME     NULL,
+        granted_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (identifier),
+        KEY idx_royal_vip_expires (expires_at)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+  } catch (err) {
+    if (err.code !== 'ER_TABLEACCESS_DENIED_ERROR' && err.code !== 'ER_DBACCESS_DENIED_ERROR') throw err;
+    created = false;
+  }
 
   const [[{ n }]] = await conn.query(
     `SELECT COUNT(*) AS n FROM information_schema.TABLES
       WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'royal_vip'`, [g.database]);
-  console.log(`  [ok]   royal_vip ready in \`${g.database}\` (${n ? 'present' : 'missing'})`);
+
+  if (n) {
+    console.log(`  [ok]   royal_vip present in \`${g.database}\`` +
+                (created ? '' : ' (read-only account, created by the root setup script)'));
+  } else {
+    console.log(`  [warn] royal_vip is missing from \`${g.database}\` and "${g.user}" may not create it.`);
+    console.log('         Run tools/create-db-users.sql as root, which creates it.');
+  }
 
   // Confirm the columns the adapter needs are really there.
   const [cols] = await conn.query(
