@@ -129,7 +129,9 @@ if (SKIP_DB) {
     try {
       return await c.query(sql, params);
     } catch (err) {
-      if (err.code !== 'ER_NOT_KEYFILE') throw err;
+      const CRASHED = ['ER_NOT_KEYFILE', 'HA_ERR_CRASHED_ON_REPAIR',
+                       'HA_ERR_CRASHED_ON_USAGE', 'ER_CRASHED_ON_USAGE'];
+      if (!CRASHED.includes(err.code)) throw err;
 
       console.log(`\n  [warn] MariaDB's own permission tables are damaged:`);
       console.log(`         ${err.sqlMessage}`);
@@ -162,7 +164,46 @@ if (SKIP_DB) {
 
       await c.query('FLUSH PRIVILEGES');
       console.log('         Repaired. Retrying.\n');
-      return await c.query(sql, params);   // one retry
+
+      try {
+        return await c.query(sql, params);   // one retry
+      } catch (again) {
+        if (!CRASHED.includes(again.code)) throw again;
+
+        /* An online REPAIR cannot fix a MyISAM table this badly
+           damaged - "last (automatic?) repair failed" means the server
+           already tried. Rebuilding the index needs the table closed,
+           which means stopping MariaDB. Say exactly how, rather than
+           leaving a stack trace. */
+        console.error(
+`\n  Could not repair MariaDB's permission tables while it is running.
+
+  ${again.sqlMessage || again.message}
+
+  mysql.db is a MyISAM table and it is damaged beyond what an online
+  REPAIR can fix. It has to be rebuilt with MariaDB stopped. This is a
+  fault in the database server itself, not in the website, and it
+  affects anything that tries to change a user or a grant.
+
+  On XAMPP:
+
+    1. XAMPP Control Panel -> MySQL -> Stop
+
+    2. Back the table up first (three files, same name):
+         copy C:\\xampp\\mysql\\data\\mysql\\db.MY* C:\\xampp\\mysql\\backup-db\\
+
+    3. Rebuild its index:
+         C:\\xampp\\mysql\\bin\\myisamchk.exe --safe-recover ^
+           C:\\xampp\\mysql\\data\\mysql\\db.MYI
+
+    4. XAMPP Control Panel -> MySQL -> Start
+
+    5. Run this again:  npm run setup
+
+  Stopping MariaDB from the Control Panel rather than closing the
+  window is also what stops this happening again.\n`);
+        process.exit(1);
+      }
     }
   }
 
