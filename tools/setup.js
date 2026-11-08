@@ -119,6 +119,53 @@ if (SKIP_DB) {
   }
   console.log(`\n  [ok]   connected to MariaDB at ${host}:${port}`);
 
+  /* MariaDB keeps its own permission tables in the `mysql` database,
+     and on a server that has been killed rather than shut down they
+     can come back with a corrupt index. GRANT then fails with
+     ER_NOT_KEYFILE, which looks like our bug but is not: nothing can
+     write a grant until those tables are repaired. REPAIR TABLE is the
+     documented fix and does not touch anyone's data. */
+  async function withGrantRepair(sql, params) {
+    try {
+      return await c.query(sql, params);
+    } catch (err) {
+      if (err.code !== 'ER_NOT_KEYFILE') throw err;
+
+      console.log(`\n  [warn] MariaDB's own permission tables are damaged:`);
+      console.log(`         ${err.sqlMessage}`);
+      console.log('         This is a pre-existing fault on this server, not the website.');
+      console.log('         Repairing them now - no game data is involved.\n');
+
+      for (const t of ['mysql.global_priv', 'mysql.db', 'mysql.tables_priv',
+                       'mysql.columns_priv', 'mysql.procs_priv', 'mysql.proxies_priv']) {
+        try {
+          const [rows] = await c.query(`REPAIR TABLE ${t}`);
+
+          // REPAIR reports progress as it goes ("Retrying repair with
+          // keycache" and so on). Only the last line per table says how
+          // it ended, so that is the one worth showing.
+          const last = rows[rows.length - 1] || {};
+          const msg = String(last.Msg_text || '');
+
+          // In MariaDB 10.4+ mysql.user is a view over global_priv, and
+          // a view cannot be repaired. Not a failure, just not a table.
+          if (/is not of type 'BASE TABLE'/i.test(msg)) continue;
+
+          console.log(`         ${t.padEnd(20)} ${msg || last.Msg_type || 'done'}`);
+        } catch (e) {
+          // Which of these exist depends on the MariaDB version.
+          if (!/doesn't exist|Unknown table/i.test(e.message)) {
+            console.log(`         ${t.padEnd(20)} could not repair: ${e.message}`);
+          }
+        }
+      }
+
+      await c.query('FLUSH PRIVILEGES');
+      console.log('         Repaired. Retrying.\n');
+      return await c.query(sql, params);   // one retry
+    }
+  }
+
   const [gdb] = await c.query('SHOW DATABASES LIKE ?', [GAME_DB]);
   if (!gdb.length) {
     console.log(`  [warn] game database "${GAME_DB}" not found on this server.`);
@@ -134,10 +181,10 @@ if (SKIP_DB) {
   // would leave .env disagreeing with MariaDB. ALTER after it so the
   // two always match, and re-running stays safe.
   for (const [user, pass] of [['royalrp_web', dbPass], ['royalrp_read', gamePass]]) {
-    await c.query(`CREATE USER IF NOT EXISTS ?@'localhost' IDENTIFIED BY ?`, [user, pass]);
-    await c.query(`ALTER USER ?@'localhost' IDENTIFIED BY ?`, [user, pass]);
+    await withGrantRepair(`CREATE USER IF NOT EXISTS ?@'localhost' IDENTIFIED BY ?`, [user, pass]);
+    await withGrantRepair(`ALTER USER ?@'localhost' IDENTIFIED BY ?`, [user, pass]);
   }
-  await c.query(
+  await withGrantRepair(
     `GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, DROP, REFERENCES
        ON \`royalrp_web\`.* TO 'royalrp_web'@'localhost'`);
   console.log('  [ok]   user royalrp_web   (its own database only)');
@@ -154,7 +201,7 @@ if (SKIP_DB) {
        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
     console.log(`  [ok]   table royal_vip in \`${GAME_DB}\``);
 
-    await c.query(`GRANT SELECT ON \`${GAME_DB}\`.* TO 'royalrp_read'@'localhost'`);
+    await withGrantRepair(`GRANT SELECT ON \`${GAME_DB}\`.* TO 'royalrp_read'@'localhost'`);
     console.log(`  [ok]   user royalrp_read  (SELECT on ${GAME_DB} only)`);
   }
 
