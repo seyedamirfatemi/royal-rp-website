@@ -1,0 +1,43 @@
+# =====================================================================
+#  ROYAL RP - reverse proxy and HTTPS
+#
+#  Caddy sits on 80/443 and forwards to the website on 127.0.0.1:4000,
+#  so the address loses its :4000 and gains a certificate.
+#
+#  It obtains and renews the certificate itself from Let's Encrypt,
+#  and redirects http to https, both without configuration.
+#
+#  __DOMAIN__ is replaced by tools/setup-caddy.ps1.
+# =====================================================================
+
+__DOMAIN__, www.__DOMAIN__ {
+
+	# The site itself. Caddy adds X-Forwarded-Proto and
+	# X-Forwarded-For, which is why backend/.env needs
+	# TRUST_PROXY=true once this is in front: without the header
+	# Express believes the connection is plain http and refuses to
+	# set the Secure session cookie, and nobody can sign in.
+	reverse_proxy 127.0.0.1:4000 {
+		# Live logs and the player counter run over a websocket.
+		# reverse_proxy upgrades it automatically; this only raises
+		# the read timeout so an idle socket is not cut every minute.
+		transport http {
+			read_timeout 300s
+		}
+	}
+
+	# The server sends no compression of its own.
+	encode zstd gzip
+
+	# Security headers come from the application (helmet), so none are
+	# set here - two sources for the same header is how you end up
+	# with a CSP nobody can account for.
+
+	log {
+		output file caddy-access.log {
+			roll_size 10MiB
+			roll_keep 5
+		}
+		format console
+	}
+}
