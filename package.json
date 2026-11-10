@@ -18,6 +18,7 @@
     "db:reset": "node backend/database/init.js --force && node backend/database/seed.js",
     "domain": "node tools/set-domain.js",
     "reset": "node tools/reset-for-launch.js",
+    "owner": "node tools/create-owner.js",
     "bridge:sync": "node tools/sync-bridge-token.js",
     "bridge:check": "node tools/check-bridge.js",
     "game:import": "node tools/import-game-data.js",
