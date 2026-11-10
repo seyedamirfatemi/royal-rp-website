@@ -19,7 +19,8 @@
     "domain": "node tools/set-domain.js",
     "reset": "node tools/reset-for-launch.js",
     "bridge:sync": "node tools/sync-bridge-token.js",
-    "bridge:check": "node tools/check-bridge.js"
+    "bridge:check": "node tools/check-bridge.js",
+    "game:import": "node tools/import-game-data.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
