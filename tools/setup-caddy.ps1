@@ -64,7 +64,11 @@ if (Test-Path $caddy) {
     exit 1
   }
 }
-& $caddy version | ForEach-Object { Ok "version $_" }
+$prevEAP = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
+$ver = & $caddy version
+$ErrorActionPreference = $prevEAP
+Ok "version $($ver | Select-Object -First 1)"
 
 # ---------------------------------------------------------------
 Step "2. Caddyfile"
@@ -76,10 +80,23 @@ if (-not (Test-Path $template)) { Bad "tools\Caddyfile is missing"; exit 1 }
   Set-Content -Path $cfgFile -Encoding utf8
 Ok "wrote $cfgFile"
 
-& $caddy validate --config $cfgFile 2>&1 | Out-Null
-if ($LASTEXITCODE -ne 0) {
+# Caddy writes its log to stderr even on success. In Windows
+# PowerShell, redirecting a native command's stderr turns every line
+# into an ErrorRecord, and with ErrorActionPreference=Stop a perfectly
+# good validation then aborts the script. So relax it around native
+# calls and judge by the exit code, which is what actually means
+# anything here.
+$prevEAP = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
+
+$validateOut = & $caddy validate --config $cfgFile 2>&1
+$validateCode = $LASTEXITCODE
+
+$ErrorActionPreference = $prevEAP
+
+if ($validateCode -ne 0) {
   Bad "Caddy rejected the config:"
-  & $caddy validate --config $cfgFile
+  $validateOut | ForEach-Object { Write-Host "         $_" }
   exit 1
 }
 Ok "config is valid"
@@ -164,9 +181,24 @@ if (-not $pm2) {
   exit 0
 }
 
-pm2 delete caddy 2>$null | Out-Null
-pm2 start $caddy --name caddy --interpreter none -- run --config $cfgFile | Out-Null
-pm2 save | Out-Null
+# Same hazard as above: pm2 is a native command and writes to stderr
+# in normal operation, so its exit codes are what to read, not its
+# error stream.
+$prevEAP = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
+
+pm2 delete caddy  2>&1 | Out-Null          # fine if it was never there
+pm2 start $caddy --name caddy --interpreter none -- run --config $cfgFile 2>&1 | Out-Null
+$startCode = $LASTEXITCODE
+pm2 save 2>&1 | Out-Null
+
+$ErrorActionPreference = $prevEAP
+
+if ($startCode -ne 0) {
+  Bad "pm2 could not start Caddy"
+  Write-Host "         pm2 logs caddy --lines 30`n"
+  exit 1
+}
 Ok "Caddy started under pm2 and saved to the boot list"
 
 Start-Sleep -Seconds 6
