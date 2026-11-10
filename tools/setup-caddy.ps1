@@ -20,8 +20,14 @@ param(
   [Parameter(Mandatory = $true)] [string] $Domain,
   [string] $InstallDir = "C:\caddy",
   [string] $AppPort = "4000",
-  [switch] $Force
+  [switch] $Force,
+  # Keep Caddy alive with a scheduled task running as SYSTEM instead of
+  # with pm2. More reliable on Windows for a native binary, and it uses
+  # nothing that is not already in the OS.
+  [switch] $UseService
 )
+
+$TaskName = "Caddy (Royal RP)"
 
 $ErrorActionPreference = "Stop"
 
@@ -171,6 +177,47 @@ if (-not $dnsReady -and -not $Force) {
   exit 0
 }
 
+# ---------------------------------------------------------------
+#  Windows scheduled task, running as SYSTEM at boot.
+#
+#  Caddy has no built-in Windows service mode and pm2 is a Node
+#  process manager, so neither is a natural fit for a native binary.
+#  A scheduled task is, it restarts the process if it dies, and it
+#  needs nothing that is not already on the machine.
+# ---------------------------------------------------------------
+if ($UseService) {
+  $prevEAP = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  pm2 delete caddy 2>&1 | Out-Null        # in case an earlier run left one
+  $ErrorActionPreference = $prevEAP
+
+  $action = New-ScheduledTaskAction -Execute $caddy `
+            -Argument "run --config `"$cfgFile`"" -WorkingDirectory $InstallDir
+  $trigger = New-ScheduledTaskTrigger -AtStartup
+  $principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" `
+               -LogonType ServiceAccount -RunLevel Highest
+  $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries `
+              -DontStopIfGoingOnBatteries -ExecutionTimeLimit 0 `
+              -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1)
+
+  Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
+    -Principal $principal -Settings $settings -Force | Out-Null
+  Ok "registered the scheduled task '$TaskName' (starts at boot, as SYSTEM)"
+
+  Start-ScheduledTask -TaskName $TaskName
+  Start-Sleep -Seconds 6
+
+  $listening = Get-NetTCPConnection -LocalPort 443 -State Listen -ErrorAction SilentlyContinue
+  if ($listening) {
+    Ok "Caddy is listening on 443"
+  } else {
+    Warn "nothing on 443 yet - give it a moment, then check:"
+    Write-Host "         Get-ScheduledTask '$TaskName' | Get-ScheduledTaskInfo"
+    Write-Host "         Get-Content $InstallDir\caddy-access.log -Tail 20"
+  }
+}
+else {
+
 # pm2 already runs the website and is already set to start on boot,
 # so Caddy goes under the same manager rather than adding a second one.
 $pm2 = Get-Command pm2 -ErrorAction SilentlyContinue
@@ -187,19 +234,43 @@ if (-not $pm2) {
 $prevEAP = $ErrorActionPreference
 $ErrorActionPreference = "Continue"
 
-pm2 delete caddy  2>&1 | Out-Null          # fine if it was never there
-pm2 start $caddy --name caddy --interpreter none -- run --config $cfgFile 2>&1 | Out-Null
+pm2 delete caddy 2>&1 | Out-Null           # fine if it was never there
+
+$startOut  = pm2 start $caddy --name caddy --interpreter none -- run --config $cfgFile 2>&1
 $startCode = $LASTEXITCODE
-pm2 save 2>&1 | Out-Null
+
+# pm2 can report success and still leave the process stopped or
+# looping, so believe the process list rather than the exit code.
+Start-Sleep -Seconds 3
+$status = (pm2 jlist 2>&1 | ConvertFrom-Json |
+           Where-Object { $_.name -eq "caddy" }).pm2_env.status
 
 $ErrorActionPreference = $prevEAP
 
-if ($startCode -ne 0) {
-  Bad "pm2 could not start Caddy"
-  Write-Host "         pm2 logs caddy --lines 30`n"
+if ($startCode -ne 0 -or $status -ne "online") {
+  Bad "pm2 could not keep Caddy running (status: $(if ($status) { $status } else { 'not in the list' }))"
+  Write-Host "`n  pm2 said:" -ForegroundColor Gray
+  $startOut | ForEach-Object { Write-Host "    $_" -ForegroundColor Gray }
+  Write-Host @"
+
+  Running Caddy under pm2 is a convenience, not a requirement - pm2 is
+  a Node process manager and a native .exe is outside what it does
+  best. Install Caddy as a proper Windows service instead:
+
+      .\tools\setup-caddy.ps1 -Domain $Domain -UseService
+
+  or just run it in a window to see it work right now:
+
+      C:\caddy\caddy.exe run --config C:\caddy\Caddyfile
+
+"@ -ForegroundColor Gray
   exit 1
 }
+
+pm2 save 2>&1 | Out-Null
 Ok "Caddy started under pm2 and saved to the boot list"
+
+}   # end of the pm2 branch
 
 Start-Sleep -Seconds 6
 Write-Host @"
